@@ -256,7 +256,7 @@ function createUserFromRequest($request, $avatarPath)
 
 function getPrescriptionData($prescriptionFile)
 {
-    $client = Gemini::client("AIzaSyB4BVDLxjCl5THx-04_CM_00Fs1AmForZ8");
+    $client = Gemini::client(env('GOOGLE_API_KEY'));
 
     $result = $client
         ->geminiFlash()
@@ -425,7 +425,7 @@ function getFormatOfProduct($name)
 if (!function_exists('payWithPaygate')) {
     function payWithPaygate($identifier, $amount, $phoneNumber, $network)
     {
-        $apiToken = "38710af9-f48a-460f-9cc8-17ee424b7b34";
+        $apiToken = env('PAYGATE_API_TOKEN');
         $description = 'Paiement de produits sanguins';
         $returnURL = env('NGROK_URL');
 
@@ -464,8 +464,8 @@ if (!function_exists('payWithPaygate')) {
 if (!function_exists('sendSMS')) {
     function sendSMS($phoneNumber, $content)
     {
-        $api_key = 'k_IhWffxYSIh-5TUWokRB_aLg_LZBbuwpA';
-        $api_secret = 's_6MGrp69IHw1bYLqhk93jnw5Pg0iO9z4J';
+        $api_key = env('SMS_API_KEY');
+        $api_secret = env('SMS_API_SECRET');
 
         $curl = curl_init();
 
@@ -527,7 +527,7 @@ if (!function_exists('sendFCMNotification')) {
         ];
 
         $headers = [
-            'Authorization: key= AAAAMK4cBn8:APA91bE94eqQwOxkdryOE7uujiFKuoYB21aEGDgVqX5hQqsuNnEgqabnpZuy7GBpE5PTTinob0yp1Dth8ccGqgAuAljlLJAWuC0Ik9uh_J8y-Dy0B7OgR568vnjZ4ZWXcFpk0nnGXJ72',
+            'Authorization: key= ' . env('FIREBASE_SERVER_KEY'),
             'Content-Type: application/json'
         ];
 
