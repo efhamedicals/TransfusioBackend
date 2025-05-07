@@ -1,0 +1,1735 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Safeblood Swagger API",
+        "description": "Safeblood Swagger API Documentation",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/type-products": {
+            "get": {
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Récupérer les produits sanguins disponibles",
+                "operationId": "getTypeProducts",
+                "responses": {
+                    "200": {
+                        "description": "Liste des produits sanguins avec statut actif",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Plasma"
+                                            },
+                                            "status": {
+                                                "type": "integer",
+                                                "example": 1
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/prescriptions": {
+            "get": {
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Récupérer les prescriptions disponibles",
+                "operationId": "getPrescriptions",
+                "responses": {
+                    "200": {
+                        "description": "Liste des prescriptions avec statut 3 ou 4",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "status": {
+                                                "type": "integer",
+                                                "example": 3
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-04-14T12:00:00Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/confirm-request/{idPrescription}": {
+            "post": {
+                "tags": [
+                    "Api BloodBank Dashboard"
+                ],
+                "summary": "Confirmer la disponibilité d'une prescription",
+                "operationId": "confirmPrescriptionRequest",
+                "parameters": [
+                    {
+                        "name": "idPrescription",
+                        "in": "path",
+                        "description": "ID de la prescription",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "blood_center_id"
+                                ],
+                                "properties": {
+                                    "blood_center_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Prescription confirmée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Disponibilité de la prescription confirmée avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur lors de la confirmation de la prescription",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Une erreur s'est produite"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/blood-assurance/login": {
+            "post": {
+                "tags": [
+                    "Api Authentification BloodAssurance"
+                ],
+                "summary": "Connexion d'un utilisateur via email et mot de passe",
+                "description": "Login user",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie ou échouée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Informations récupérées avec succès!"
+                                        },
+                                        "user": {
+                                            "description": "Données utilisateur (si la connexion réussit)",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/blood-assurance/dashboard/{idAssurance}/home": {
+            "get": {
+                "tags": [
+                    "Api BloodAssurance Dashboard"
+                ],
+                "summary": "Récupérer les données générales du tableau de bord",
+                "description": "Récupérer les données générales du tableau de bord",
+                "operationId": "homeDatas",
+                "parameters": [
+                    {
+                        "name": "idAssurance",
+                        "in": "path",
+                        "description": "ID de l'assurance",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Réponse avec ou sans erreur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Succès ou message d'erreur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/blood-assurance/dashboard/{idAssurance}/prescriptions": {
+            "get": {
+                "tags": [
+                    "Api BloodAssurance Dashboard"
+                ],
+                "summary": "Récupère les prescriptions liées à une assurance (hospital_id)",
+                "description": "Liste des prescriptions associées à une assurance",
+                "operationId": "prescriptionsList",
+                "parameters": [
+                    {
+                        "name": "idAssurance",
+                        "in": "path",
+                        "description": "ID de l'assurance (hospital_id)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des prescriptions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "reference": {
+                                                "type": "string",
+                                                "example": "RX12345"
+                                            },
+                                            "rai": {
+                                                "type": "string",
+                                                "example": "RAI123"
+                                            },
+                                            "patient": {
+                                                "type": "string",
+                                                "example": "John Doe"
+                                            },
+                                            "user": {
+                                                "type": "string",
+                                                "example": "user@example.com"
+                                            },
+                                            "hospital": {
+                                                "type": "string",
+                                                "example": "Hospital XYZ"
+                                            },
+                                            "products": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "product_id": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "product_name": {
+                                                            "type": "string",
+                                                            "example": "Blood Test Kit"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "status": {
+                                                "type": "integer",
+                                                "example": 0
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-04-10T18:58:05.375Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-04-10T18:58:05.375Z"
+                                            },
+                                            "bloodBag": {
+                                                "type": "string",
+                                                "example": "Bag12345",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/blood-bank/login": {
+            "post": {
+                "tags": [
+                    "Api Authentification BloodBank"
+                ],
+                "summary": "Connexion d'un utilisateur via email et mot de passe",
+                "operationId": "bloodBankLoginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie ou échouée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Informations récupérées avec succès!"
+                                        },
+                                        "user": {
+                                            "description": "Données utilisateur (si la connexion réussit)",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Mauvaise requête",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mot de passe erroné ou aucun compte associé"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Une erreur s'est produite lors de la tentative de connexion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transfusio/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion d'un utilisateur via email ou téléphone",
+                "description": "Connexion d'un utilisateur via email ou téléphone",
+                "operationId": "mobileLoginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "email"
+                                        ],
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email",
+                                                "example": "john@example.com"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    {
+                                        "required": [
+                                            "phone"
+                                        ],
+                                        "properties": {
+                                            "phone": {
+                                                "type": "string",
+                                                "example": "+22890123456"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie ou OTP envoyé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "otp": {
+                                            "type": "string",
+                                            "example": "123456"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Otp envoyé avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transfusio/auth/check-password": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Vérifie le mot de passe de l'utilisateur",
+                "description": "Vérification du mot de passe de l'utilisateur",
+                "operationId": "checkPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe vérifié",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "api_token": {
+                                            "type": "string",
+                                            "example": "jwt.token.here"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "user": {
+                                            "description": "Données utilisateur",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transfusio/auth/send-otp": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Envoie un OTP à l'utilisateur via email ou téléphone",
+                "description": "Envoi d'un OTP à l'utilisateur",
+                "operationId": "sendOtp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "phone",
+                                    "is_new"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+22890123456"
+                                    },
+                                    "is_new": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP envoyé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "otp": {
+                                            "type": "string",
+                                            "example": "123456"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Otp envoyé avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transfusio/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Enregistre un nouvel utilisateur",
+                "description": "Enregistrement d'un utilisateur",
+                "operationId": "registerPersonal",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "phone",
+                                    "password",
+                                    "first_name",
+                                    "last_name",
+                                    "address",
+                                    "email_verify",
+                                    "phone_verify"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+22890123456"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "123 Main Street"
+                                    },
+                                    "email_verify": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "phone_verify": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur enregistré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Utilisateur enregistré avec succès!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transfusio/auth/set-password": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Définit un nouveau mot de passe pour l'utilisateur",
+                "description": "Définir ou réinitialiser le mot de passe d'un utilisateur",
+                "operationId": "setPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nouveaumdp123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nouveaumdp123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe défini avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mot de passe défini avec succès"
+                                        },
+                                        "api_token": {
+                                            "type": "string",
+                                            "example": "jwt.token.here"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "user": {
+                                            "description": "Données utilisateur",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transfusio/auth/set-fcm-token": {
+            "put": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Enregistre ou met à jour le token Firebase Cloud Messaging (FCM)",
+                "description": "Enregistrer ou mettre à jour le token FCM de l'utilisateur",
+                "operationId": "setFcmToken",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "device_token"
+                                ],
+                                "properties": {
+                                    "device_token": {
+                                        "type": "string",
+                                        "example": "dskfdjfklsdjfksdf-firebase-token"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token FCM enregistré",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token enregistré avec succès"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/transfusio/psl-requests": {
+            "get": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Liste des demandes PSL",
+                "description": "Cette route permet de obtenir la liste des demandes de produits sanguins.",
+                "operationId": "indexPslRequest",
+                "responses": {
+                    "200": {
+                        "description": "Liste des demandes de produits sanguins",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Liste des demandes de produits sanguins"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Non autorisé"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Créer une nouvelle demande PSL avec prescription et rapport sanguin",
+                "description": "Cette route permet de soumettre une demande de produits sanguins à partir d'une prescription médicale et d'un rapport sanguin.",
+                "operationId": "storePslRequest",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "hospital_name",
+                                    "prescription",
+                                    "blood_report"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Jean"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Dupont"
+                                    },
+                                    "hospital_name": {
+                                        "type": "string",
+                                        "example": "Hôpital Général de Lomé"
+                                    },
+                                    "prescription": {
+                                        "type": "file",
+                                        "format": "binary"
+                                    },
+                                    "blood_report": {
+                                        "type": "file",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Prescription traitée ou non reconnue",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Prescription traitée avec succès"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Données non valides"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/transfusio/stats": {
+            "get": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Statistiques des demandes PSL",
+                "description": "Cette route permet d'obtenir les statistiques des demandes de produits sanguins.",
+                "operationId": "stats",
+                "responses": {
+                    "200": {
+                        "description": "Statistiques des demandes de produits sanguins",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Statistiques des demandes de produits sanguins"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "psl_requests_count": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "payments_count": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "payments_amount": {
+                                                    "type": "integer",
+                                                    "example": 5000
+                                                },
+                                                "average_hours": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Non autorisé"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/transfusio/psl-requests/{pslRequestId}/check": {
+            "post": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Vérifer une demande de produits sanguins",
+                "description": "Cette route permet de vérifier une demande de produits sanguins.",
+                "operationId": "checkPslRequest",
+                "parameters": [
+                    {
+                        "name": "pslRequestId",
+                        "in": "path",
+                        "description": "ID de la demande de produits sanguins",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Prescription traitée ou non reconnue",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Prescription traitée avec succès"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Données non valides"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/transfusio/psl-requests/{pslRequestId}/re-check": {
+            "post": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Re-vérifier une demande de produits sanguins",
+                "description": "Cette route permet de re-vérifier une demande de produits sanguins.",
+                "operationId": "reCheckPslRequest",
+                "parameters": [
+                    {
+                        "name": "pslRequestId",
+                        "in": "path",
+                        "description": "ID de la demande de produits sanguins",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Prescription traitée ou non reconnue",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Prescription traitée avec succès"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Données non valides"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/transfusio/psl-requests/{pslRequestId}": {
+            "get": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Afficher une demande PSL",
+                "description": "Cette route permet de obtenir une demande de produits sanguins.",
+                "operationId": "showPslRequest",
+                "parameters": [
+                    {
+                        "name": "pslRequestId",
+                        "in": "path",
+                        "description": "ID de la demande de produits sanguins",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Demande de produits sanguins obtenue avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Liste des demandes de produits sanguins"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_name": {
+                                                    "type": "string",
+                                                    "example": "Doe"
+                                                },
+                                                "first_name": {
+                                                    "type": "string",
+                                                    "example": "John"
+                                                },
+                                                "prescription": {
+                                                    "type": "string",
+                                                    "example": "path/to/prescription.pdf"
+                                                },
+                                                "blood_report": {
+                                                    "type": "string",
+                                                    "example": "path/to/blood_report.pdf"
+                                                },
+                                                "end_verification": {
+                                                    "type": "string",
+                                                    "example": "2023-06-01 10:00:00"
+                                                },
+                                                "prescription_date": {
+                                                    "type": "string",
+                                                    "example": "2023-06-01"
+                                                },
+                                                "prescription_fullname": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "prescription_birth_date": {
+                                                    "type": "string",
+                                                    "example": "1990-01-01"
+                                                },
+                                                "prescription_age": {
+                                                    "type": "integer",
+                                                    "example": 30
+                                                },
+                                                "prescription_gender": {
+                                                    "type": "string",
+                                                    "example": "M"
+                                                },
+                                                "prescription_blood_type": {
+                                                    "type": "string",
+                                                    "example": "A+"
+                                                },
+                                                "prescription_blood_rh": {
+                                                    "type": "string",
+                                                    "example": "+"
+                                                },
+                                                "prescription_diagnostic": {
+                                                    "type": "string",
+                                                    "example": "Diagnostique"
+                                                },
+                                                "prescription_substitution": {
+                                                    "type": "string",
+                                                    "example": "Substitution"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-01 10:00:00"
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "product_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "psl_request_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "quantity": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "example": "2023-06-01 10:00:00"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "example": "2023-06-01 10:00:00"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "processing"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Non autorisé"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Supprimer une demande de produits sanguins",
+                "description": "Cette route permet de supprimer une demande de produits sanguins.",
+                "operationId": "deletePslRequest",
+                "parameters": [
+                    {
+                        "name": "pslRequestId",
+                        "in": "path",
+                        "description": "ID de la demande de produits sanguins",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Demande de produits sanguins supprimée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Demande de produits sanguins supprimée avec succès"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requête invalide"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Non autorisé"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/transfusio/psl-requests/{pslRequestId}/pay": {
+            "post": {
+                "tags": [
+                    "PSL Requests"
+                ],
+                "summary": "Payer une demande de produits sanguins",
+                "description": "Cette route permet de payer une demande de produits sanguins.",
+                "operationId": "payPslRequest",
+                "parameters": [
+                    {
+                        "name": "pslRequestId",
+                        "in": "path",
+                        "description": "ID de la demande de produits sanguins",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "phone_number",
+                                    "network",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "+22890123456"
+                                    },
+                                    "network": {
+                                        "type": "string",
+                                        "example": "TMONEY"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "example": 100
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Demande de produits sanguins payée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Demande de produits sanguins payée avec succès"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requête invalide"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Non autorisé"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Use a JWT token",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Api",
+            "description": "Api"
+        },
+        {
+            "name": "Api BloodBank Dashboard",
+            "description": "Api BloodBank Dashboard"
+        },
+        {
+            "name": "Api Authentification BloodAssurance",
+            "description": "Api Authentification BloodAssurance"
+        },
+        {
+            "name": "Api BloodAssurance Dashboard",
+            "description": "Api BloodAssurance Dashboard"
+        },
+        {
+            "name": "Api Authentification BloodBank",
+            "description": "Api Authentification BloodBank"
+        },
+        {
+            "name": "Authentification",
+            "description": "Authentification"
+        },
+        {
+            "name": "PSL Requests",
+            "description": "PSL Requests"
+        }
+    ]
+}
