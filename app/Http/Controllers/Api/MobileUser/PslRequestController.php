@@ -206,7 +206,7 @@ class PslRequestController extends Controller
 
 
 
-        $jsonData = getPrescriptionData(config('app.url') . $prescriptionFile);
+        $jsonData = getPrescriptionData(public_path($prescriptionFile));
 
         // Vérifier si le décodage a réussi et si les données sont valides
         if (json_last_error() === JSON_ERROR_NONE && isset($jsonData['is_valid'])) {
