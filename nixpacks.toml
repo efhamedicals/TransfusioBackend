@@ -1,6 +1,7 @@
 [phases.build]
 cmds = [
-    "mkdir -p /app/public/avatars /app/public/fiches /app/public/patients",
-    "chmod -R 775 /app/public/avatars /app/public/fiches /app/public/patients",
-    "chmod -R 775 /app/storage /app/bootstrap/cache"
+    "chmod +x /app/start.sh"
 ]
+
+[start]
+cmd = "bash /app/start.sh"
