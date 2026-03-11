@@ -9,7 +9,6 @@ use Barryvdh\DomPDF\Facade\PDF;
 use Carbon\Carbon;
 use Gemini\Data\Blob;
 use Gemini\Enums\MimeType;
-use Gemini;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
