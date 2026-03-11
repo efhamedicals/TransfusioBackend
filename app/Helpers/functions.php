@@ -9,6 +9,7 @@ use Barryvdh\DomPDF\Facade\PDF;
 use Carbon\Carbon;
 use Gemini\Data\Blob;
 use Gemini\Enums\MimeType;
+use Gemini;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -259,7 +260,7 @@ function getPrescriptionData($prescriptionFile)
     $client = Gemini::client(env('GOOGLE_API_KEY'));
 
     $result = $client
-        ->geminiFlash()
+        ->generativeModel(model: 'gemini-2.0-flash')
         ->generateContent([
             "Vérifies moi ce document si c'est une prescription de produits sanguins et s'il est valide.\n
             Si c'est une prescription, recupères moi les informations importantes.\n
