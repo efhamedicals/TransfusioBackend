@@ -259,7 +259,7 @@ function getPrescriptionData($prescriptionFile)
     $client = Gemini::client(env('GOOGLE_API_KEY'));
 
     $result = $client
-        ->generativeModel(model: 'gemini-2.0-flash')
+        ->generativeModel(model: 'gemini-2.5-flash-lite')
         ->generateContent([
             "Vérifies moi ce document si c'est une prescription de produits sanguins et s'il est valide.\n
             Si c'est une prescription, recupères moi les informations importantes.\n
