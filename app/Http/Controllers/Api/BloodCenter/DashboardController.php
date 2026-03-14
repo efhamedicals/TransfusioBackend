@@ -87,7 +87,7 @@ class DashboardController extends Controller
                 'short_name' => $shortName,
                 'email' => $email,
                 'phone' => $phone,
-                'avatar' => "/avatars/default.jpeg",
+                'avatar' => "/static/avatars/default.jpeg",
                 'status' => 1,
                 'geolocation_id' => $geolocation->id
             ]);
