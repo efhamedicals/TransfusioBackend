@@ -6,6 +6,7 @@ mkdir -p /app/storage/framework/sessions
 mkdir -p /app/storage/framework/views
 mkdir -p /app/storage/logs
 mkdir -p /app/public/avatars
+mkdir -p /app/public/static/avatars
 mkdir -p /app/public/fiches
 mkdir -p /app/public/patients
 
@@ -13,6 +14,7 @@ mkdir -p /app/public/patients
 chmod -R 775 /app/storage
 chmod -R 775 /app/bootstrap/cache
 chmod -R 777 /app/public/avatars
+chmod -R 777 /app/public/static/avatars
 chmod -R 777 /app/public/fiches
 chmod -R 777 /app/public/patients
 
