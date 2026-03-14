@@ -18,13 +18,6 @@ class Assurance extends Model
         'status', 'rate'
     ];
 
-    public function getAvatarAttribute($value): ?string
-    {
-        if ($value && str_starts_with($value, '/avatars/')) {
-            return '/static' . $value;
-        }
-        return $value;
-    }
 
     // Relation avec la géolocalisation
     public function geolocation()

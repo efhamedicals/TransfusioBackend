@@ -54,20 +54,20 @@ class PatientController extends Controller
 
                 if ($photo != "" && $photo != null) {
                     $reference = getRamdomText(10);
+                    $photoData = $photo;
                     $photo = "/patients/" . $last_name . $reference . ".jpg";
-                    //$destinationPath = public_path('/patients');
-                    $destinationPath = "/home/www/safebloodapi.kofcorporation.com/patients";
+                    $destinationPath = public_path('patients');
                     $ImagePath = $destinationPath . "/" . $last_name . $reference . ".jpg";
-                    file_put_contents($ImagePath, base64_decode($photo));
+                    file_put_contents($ImagePath, base64_decode($photoData));
                 }
 
                 if ($cni != "" && $cni != null) {
                     $reference = getRamdomText(10);
+                    $cniData = $cni;
                     $cni = "/patients/" . $last_name . $reference . ".jpg";
-                    //$destinationPath = public_path('/patients');
-                    $destinationPath = "/home/www/safebloodapi.kofcorporation.com/patients";
+                    $destinationPath = public_path('patients');
                     $ImagePath = $destinationPath . "/" . $last_name . $reference . ".jpg";
-                    file_put_contents($ImagePath, base64_decode($cni));
+                    file_put_contents($ImagePath, base64_decode($cniData));
                 }
 
                 $Patient = Patient::create([

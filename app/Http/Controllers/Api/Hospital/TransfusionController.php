@@ -58,10 +58,9 @@ class TransfusionController extends Controller
             if ($img != "" && $img != null) {
                 $reference = getRamdomText(10);
                 $image = "/patients/" . $blood_bag_id . $reference . ".jpg";
-                //$destinationPath = public_path('/patients');
-                $destinationPath = "/home/www/safebloodapi.kofcorporation.com/patients";
+                $destinationPath = public_path('patients');
                 $ImagePath = $destinationPath . "/" . $blood_bag_id . $reference . ".jpg";
-                file_put_contents($ImagePath, base64_decode($image));
+                file_put_contents($ImagePath, base64_decode($img));
             }
 
 

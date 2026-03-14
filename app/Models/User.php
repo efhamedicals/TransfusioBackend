@@ -74,14 +74,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(BloodCenter::class);
     }
 
-    public function getAvatarAttribute($value): ?string
-    {
-        if ($value && str_starts_with($value, '/avatars/')) {
-            return '/static' . $value;
-        }
-        return $value;
-    }
-
     /**
      * The attributes that should be cast.
      *

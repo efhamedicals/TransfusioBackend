@@ -218,9 +218,9 @@ function uploadFile($request, $file)
         $fileName = 'prescription_' . getRamdomInt(6) . '.' . $extension;
 
 
-        $file->move(public_path('avatars'), $fileName);
+        $file->move(public_path('static/avatars'), $fileName);
 
-        return 'avatars/' . $fileName;
+        return '/static/avatars/' . $fileName;
     }
     return null;
 }
