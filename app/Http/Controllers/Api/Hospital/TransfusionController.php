@@ -67,7 +67,8 @@ class TransfusionController extends Controller
             $transfusion =  Transfusion::create([
                 'prescription_id' => $prescription->id,
                 'image' => $image,
-                'status' => 0
+                'status' => 0,
+                'reference' => 'TRF-' . strtoupper(getRamdomText(8)),
             ]);
             $args['transfusion'] = $transfusion;
             $args['message'] = "Transfusion ajoutée avec succès!";
