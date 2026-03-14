@@ -65,7 +65,7 @@ class BloodBagSeeder2 extends Seeder
                 'validity_days'    => 365,  // 1 an à −20°C
                 'price_min'        => 10000,
                 'price_max'        => 18000,
-                'needs_blood_type' => false, // le PFC est souvent ABO-compatible universel
+                'needs_blood_type' => true, // le PFC est souvent ABO-compatible universel
                 'weight'           => 25,
             ],
             3 => [
