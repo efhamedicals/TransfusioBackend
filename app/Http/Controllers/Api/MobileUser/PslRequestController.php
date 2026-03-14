@@ -133,7 +133,7 @@ class PslRequestController extends Controller
             'psl_requests_count' => $pslRequestsCount,
             'payments_count' => $paymentsCount,
             'payments_amount' => $paymentsAmount,
-            'average_hours' => $averageHours
+            'average_hours' => "$averageHours"
         ]);
     }
 
